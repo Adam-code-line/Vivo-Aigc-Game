@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id = "p" onclick="Run()">nihao</p>
+</body>
+</html>
+
+<script>
+
+    function Run() {
+        run().then((data) => {
+            console.log(data);
+            document.getElementById('p').innerHTML += data.message + '\n';
+        }).catch(error => {
+
+        })
+    }
+
+    async function run() {
+        
+        const response = await fetch("http://127.0.0.1:5500/ai/run",{
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            body: JSON.stringify({question: '你好'})
+        });
+
+        if(!response.ok) {
+            throw new Error('NetWork');
+        }
+        const data = await response.json();
+        if(data.message) {
+            return data;
+        }
+        else {
+            throw new Error('Error');
+        }
+    }
+</script>
